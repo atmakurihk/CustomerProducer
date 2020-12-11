@@ -1,0 +1,144 @@
+swagger: '2.0'
+info:
+  description: >-
+    This is a sample server design for customer registration flow by sending request to kafkaa producer
+  version: 1.0.0
+  title: Customer registration
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: apiteam@swagger.io
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: localhost
+basePath: /v1
+tags:
+  - name: customer
+    description: operations on customer
+    externalDocs:
+      description: Find out more about our store
+      url: 'http://swagger.io'
+schemes:
+  - https
+  - http
+paths:
+  /customer:
+    post:
+      tags:
+        - customer
+      summary: Create Customer
+      description: This can only be done by the logged in user.
+      operationId: createCustomer
+      produces:
+        - application/json
+      parameters:
+        - in: header
+          type: string
+          name: Authorization
+          description: Token to be sent to authorize the request
+          required: true
+        - in: header
+          name: activity-id
+          type: string
+        - in: header
+          type: string
+          name: Transaction-Id 
+        - in: body
+          name: body
+          description: Created customer object
+          required: true
+          schema:
+            $ref: '#/definitions/Customer'
+      responses:
+        '201':
+          description: successful operation
+          schema:
+                $ref: '#/definitions/SuccessResponse'
+        '400':
+          description: bad request (error in request)
+          schema:
+                $ref: '#/definitions/FailureResponse'
+        '401':
+           description: un authourized (invalid token)
+           schema:
+                $ref: '#/definitions/FailureResponse'
+        '500':
+           description: internal server error (unknown error occured)
+           schema:
+                $ref: '#/definitions/FailureResponse'
+definitions:
+  SuccessResponse:
+    type: object
+    required: ["status","message"]
+    properties:
+      status:
+        type: string
+        default: "success"
+      message : 
+        type: string
+    xml:
+      name: SuccessResponse
+  FailureResponse:
+     type : object
+     required: ["status","message"]
+     properties:
+       status:
+        type: string
+        default: "failed"
+       message : 
+        type: string
+       errorType: 
+        type: string
+     xml:
+      name: FailureResponse
+  Address:
+    type: object
+    required: ["addressLine1","postalCode"]
+    properties:
+      addressLine1:
+        type: string
+      addressLine2:
+        type: string
+      street:
+        type: string
+      postalCode:
+        type: string
+    xml:
+      name: address
+  Customer:
+    type: object
+    required: ["customerNumber","firstName","lastName","birthdate","country","countryCode","mobileNumber","email","customerStatus","address"]
+    properties:
+      customerNumber:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      birthdate:
+        type: string
+        example: "DD-MM-YYYY"
+      country:
+        type: string
+        example: "India"
+      countryCode:
+        type: string
+        example: "IN"
+      mobileNumber:
+        type: string
+        example: "9989797896"
+      email:
+        type: string
+        example: "abc@gmail.com"
+      customerStatus:
+        type: string
+        description: Customer Status
+        enum:
+          - restored
+          - suspended
+          - open
+          - closed
+      address:
+        $ref: '#/definitions/Address'
+    xml:
+      name: Customer
