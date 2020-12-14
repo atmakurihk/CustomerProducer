@@ -16,12 +16,8 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final PasswordEncoder passwordEncoder;
-
     @Autowired
-    public WebSecurityConfig(PasswordEncoder pwdEncoder) {
-        this.passwordEncoder =pwdEncoder;
-    }
+    private  PasswordEncoder passwordEncoder;
 
     @Override
     protected UserDetailsService userDetailsService() {

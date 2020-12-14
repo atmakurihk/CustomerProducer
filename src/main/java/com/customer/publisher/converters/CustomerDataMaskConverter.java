@@ -1,12 +1,13 @@
-package com.customer.publisher.utils;
+package com.customer.publisher.converters;
 
 import com.customer.publisher.model.Customer;
+import com.customer.publisher.utils.ApplicationConstants;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class CustomerDataMaskUtil implements Converter<Customer,Customer> {
+public class CustomerDataMaskConverter implements Converter<Customer,Customer> {
 
     private static  final String replaceString = "*";
 
@@ -16,7 +17,7 @@ public class CustomerDataMaskUtil implements Converter<Customer,Customer> {
         BeanUtils.copyProperties(customer, maskedCustomer);
 
         maskedCustomer.setCustomerNumber(
-                maskString(maskedCustomer.getCustomerNumber(),ApplicationConstants.CUSTOMER_MASK)
+                maskString(maskedCustomer.getCustomerNumber(), ApplicationConstants.CUSTOMER_MASK)
         );
         maskedCustomer.setBirthdate(
                 maskString(maskedCustomer.getBirthdate(), ApplicationConstants.DOB_MASK)

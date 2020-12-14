@@ -1,4 +1,4 @@
-package com.customer.publisher.utils;
+package com.customer.publisher.converters;
 
 import com.customer.publisher.model.Customer;
 import com.customer.publisher.model.kafkaModel.CustomerRequestKafka;
