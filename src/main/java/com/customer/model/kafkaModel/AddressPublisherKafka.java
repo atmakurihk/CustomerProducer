@@ -1,6 +1,6 @@
 package com.customer.model.kafkaModel;
 
-public class AddressPublisherKafka   {
+public class AddressPublisherKafka {
 
   private String addressLine1 = null;
 
@@ -42,4 +42,3 @@ public class AddressPublisherKafka   {
     this.postalCode = postalCode;
   }
 }
-

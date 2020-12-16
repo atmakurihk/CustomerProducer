@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <configuration>
-    <property name="PATH" value="logs" />
+    <property name="PATH" value="logs"/>
 
     <springProperty scope="context" name="springAppName" source="spring.application.name"/>
 
@@ -24,27 +24,26 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <fileNamePattern>${PATH}/archived/info.%d{yyyy-MM-dd}.%i.log
             </fileNamePattern>
-                <timeBasedFileNamingAndTriggeringPolicy
-                        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>10MB</maxFileSize>
             </timeBasedFileNamingAndTriggeringPolicy>
         </rollingPolicy>
     </appender>
 
 
-
-  <logger name="org.springframework.web" level="ERROR" additivity="false">
-        <appender-ref ref="STDOUT" />
+    <logger name="org.springframework.web" level="ERROR" additivity="false">
+        <appender-ref ref="STDOUT"/>
 
     </logger>
 
     <logger name="com.customer" level="INFO" additivity="false">
-        <appender-ref ref="STDOUT" />
-        <appender-ref ref="INFO-LOG" />
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="INFO-LOG"/>
     </logger>
 
     <root level="INFO">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </root>
 
 </configuration>

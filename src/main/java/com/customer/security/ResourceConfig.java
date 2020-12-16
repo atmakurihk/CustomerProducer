@@ -8,15 +8,16 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 @Configuration
 @EnableResourceServer
 public class ResourceConfig extends ResourceServerConfigurerAdapter {
-    @Override
-    public void configure(HttpSecurity http) throws Exception {
-        http
-                .headers()
-                .frameOptions()
-                .disable()
-                .and()
-                .authorizeRequests()
-                .antMatchers("/","/home","/register","/login").permitAll()
-                .antMatchers("/customer/**").authenticated();
-    }
+  @Override
+  public void configure(HttpSecurity http) throws Exception {
+    http.headers()
+        .frameOptions()
+        .disable()
+        .and()
+        .authorizeRequests()
+        .antMatchers("/", "/home", "/register", "/login")
+        .permitAll()
+        .antMatchers("/customer/**")
+        .authenticated();
+  }
 }

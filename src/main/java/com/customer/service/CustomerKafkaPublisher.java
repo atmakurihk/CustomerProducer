@@ -5,5 +5,5 @@ import com.customer.model.kafkaModel.CustomerRequestKafka;
 
 public interface CustomerKafkaPublisher {
 
-    public SuccessResponse send(CustomerRequestKafka customer);
+  public SuccessResponse send(CustomerRequestKafka customer);
 }

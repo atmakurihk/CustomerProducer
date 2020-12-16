@@ -13,20 +13,17 @@ import org.springframework.kafka.core.KafkaTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 @ExtendWith(MockitoExtension.class)
 public class CustomerKafkaPublisherImplTest {
 
-    @InjectMocks
-    private CustomerKafkaPublisherImpl customerKafkaPublisher;
+  @InjectMocks private CustomerKafkaPublisherImpl customerKafkaPublisher;
 
-    @Mock
-    private KafkaTemplate<String, CustomerRequestKafka> kafkaTemplate;
+  @Mock private KafkaTemplate<String, CustomerRequestKafka> kafkaTemplate;
 
-
-    @Test
-    public void testSuccessCustomerResponseWhenPublishDataToKafka(){
-        SuccessResponse successResponse = customerKafkaPublisher.send(Mockito.any(CustomerRequestKafka.class));
-        assertThat(successResponse.getStatus()).isEqualTo("Success");
-    }
+  @Test
+  public void testSuccessCustomerResponseWhenPublishDataToKafka() {
+    SuccessResponse successResponse =
+        customerKafkaPublisher.send(Mockito.any(CustomerRequestKafka.class));
+    assertThat(successResponse.getStatus()).isEqualTo("Success");
+  }
 }

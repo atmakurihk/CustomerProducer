@@ -28,124 +28,128 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @ExtendWith(MockitoExtension.class)
 public class CustomerControllerTest {
 
-    private MockMvc mockMvc;
+  @InjectMocks CustomerController customerController;
+  private MockMvc mockMvc;
+  @Mock private CustomerDataMaskConverter customerDataMaskConverter;
 
-    @InjectMocks
-    CustomerController customerController;
+  @Mock private CustomerKafkaRequestConverter customerKafkaRequestConverter;
 
-    @Mock
-   private CustomerDataMaskConverter customerDataMaskConverter;
+  @Mock private CustomerKafkaPublisher customerKafkaPublisher;
 
-    @Mock
-    private CustomerKafkaRequestConverter customerKafkaRequestConverter;
+  @BeforeEach
+  public void setUp() {
+    mockMvc =
+        MockMvcBuilders.standaloneSetup(customerController)
+            .setControllerAdvice(new CustomerExceptionHandler())
+            .build();
+  }
 
-    @Mock
-    private CustomerKafkaPublisher customerKafkaPublisher;
+  @Test
+  public void shouldReturnSuccessWhenValidRequest() throws Exception {
+    Mockito.doReturn(new CustomerRequestKafka())
+        .when(customerKafkaRequestConverter)
+        .convert(Mockito.any(Customer.class));
 
-    @BeforeEach
-    public void  setUp()
-    {
-        mockMvc = MockMvcBuilders.standaloneSetup(customerController)
-                .setControllerAdvice(new CustomerExceptionHandler())
-                .build();
+    MockHttpServletResponse response =
+        mockMvc
+            .perform(
+                post("/customer/create")
+                    .content(ObjectMapperUtil.returnJsonFromObject(createInvalidRequest()))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .headers(createHeaders())
+                    .accept(MediaType.APPLICATION_JSON))
+            .andReturn()
+            .getResponse();
 
-    }
+    assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+  }
 
-    @Test
-    public void shouldReturnSuccessWhenValidRequest() throws Exception {
-        Mockito.doReturn(new CustomerRequestKafka())
-                .when(customerKafkaRequestConverter)
-                .convert(Mockito.any(Customer.class));
+  @Test
+  public void shouldReturnBadrequest() throws Exception {
+    MockHttpServletResponse response =
+        mockMvc
+            .perform(
+                post("/customer/create")
+                    .content(ObjectMapperUtil.returnJsonFromObject(createValidCustomerObject()))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .headers(createHeaders())
+                    .accept(MediaType.APPLICATION_JSON))
+            .andReturn()
+            .getResponse();
 
-        MockHttpServletResponse response = mockMvc.perform(post("/customer/create")
-                .content(ObjectMapperUtil.returnJsonFromObject(createInvalidRequest()))
-                .contentType(MediaType.APPLICATION_JSON)
-                .headers(createHeaders())
-                .accept(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse();
+    assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
+  }
 
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
-    }
+  @Test
+  public void shouldreturn404NotFound() throws Exception {
+    MockHttpServletResponse response =
+        mockMvc
+            .perform(
+                post("/customer/crea")
+                    .content(ObjectMapperUtil.returnJsonFromObject(createValidCustomerObject()))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .headers(createInvalidHeaders())
+                    .accept(MediaType.APPLICATION_JSON))
+            .andReturn()
+            .getResponse();
 
-    @Test
-    public  void shouldReturnBadrequest() throws  Exception
-    {
-        MockHttpServletResponse response = mockMvc.perform(post("/customer/create")
-                .content(ObjectMapperUtil.returnJsonFromObject(createValidCustomerObject()))
-                .contentType(MediaType.APPLICATION_JSON)
-                .headers(createHeaders())
-                .accept(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse();
+    assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
+  }
 
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.BAD_REQUEST.value());
-    }
+  private Customer createValidCustomerObject() {
+    Customer customerRequest = new Customer();
+    customerRequest.setCustomerNumber("C000000001");
+    customerRequest.setBirthdate("10-12-202");
+    customerRequest.setCountry("India");
+    customerRequest.setCountryCode("IN");
+    customerRequest.setCustomerStatus(Customer.CustomerStatusEnum.OPEN);
+    customerRequest.setEmail("customer@gmail.com");
+    customerRequest.setFirstName("FirstnameValid");
+    customerRequest.setLastName("LastnameValid");
+    customerRequest.setMobileNumber("9696969696");
+    customerRequest.setAddress(createValidAddressObject());
+    return customerRequest;
+  }
 
-    @Test
-    public void shouldreturn404NotFound() throws Exception
-    {
-        MockHttpServletResponse response = mockMvc.perform(post("/customer/crea")
-                .content(ObjectMapperUtil.returnJsonFromObject(createValidCustomerObject()))
-                .contentType(MediaType.APPLICATION_JSON)
-                .headers(createInvalidHeaders())
-                .accept(MediaType.APPLICATION_JSON))
-                .andReturn().getResponse();
+  private Customer createInvalidRequest() {
+    Customer customerRequest = new Customer();
+    customerRequest.setCustomerNumber("C0000001");
+    customerRequest.setBirthdate("10-12-2020");
+    customerRequest.setCountry("India");
+    customerRequest.setCountryCode("IN");
+    customerRequest.setCustomerStatus(Customer.CustomerStatusEnum.OPEN);
+    customerRequest.setEmail("customer@gmail.com");
+    customerRequest.setFirstName("FirstnameValid");
+    customerRequest.setLastName("LastnameValid");
+    customerRequest.setMobileNumber("9696969696");
+    customerRequest.setAddress(createValidAddressObject());
+    return customerRequest;
+  }
 
-        assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
-    }
-    private Customer createValidCustomerObject() {
-        Customer customerRequest = new Customer();
-        customerRequest.setCustomerNumber("C000000001");
-        customerRequest.setBirthdate("10-12-202");
-        customerRequest.setCountry("India");
-        customerRequest.setCountryCode("IN");
-        customerRequest.setCustomerStatus(Customer.CustomerStatusEnum.OPEN);
-        customerRequest.setEmail("customer@gmail.com");
-        customerRequest.setFirstName("FirstnameValid");
-        customerRequest.setLastName("LastnameValid");
-        customerRequest.setMobileNumber("9696969696");
-        customerRequest.setAddress(createValidAddressObject());
-        return customerRequest;
-    }
-    private Customer createInvalidRequest() {
-        Customer customerRequest = new Customer();
-        customerRequest.setCustomerNumber("C0000001");
-        customerRequest.setBirthdate("10-12-2020");
-        customerRequest.setCountry("India");
-        customerRequest.setCountryCode("IN");
-        customerRequest.setCustomerStatus(Customer.CustomerStatusEnum.OPEN);
-        customerRequest.setEmail("customer@gmail.com");
-        customerRequest.setFirstName("FirstnameValid");
-        customerRequest.setLastName("LastnameValid");
-        customerRequest.setMobileNumber("9696969696");
-        customerRequest.setAddress(createValidAddressObject());
-        return customerRequest;
-    }
+  private Address createValidAddressObject() {
 
+    Address address = new Address();
+    address.setAddressLine1("addressLine1 address");
+    address.setAddressLine2("customer_address_l2");
+    address.setStreet("customer_address_street");
+    address.setPostalCode("12345");
 
-    private Address createValidAddressObject() {
+    return address;
+  }
 
-        Address address = new Address();
-        address.setAddressLine1("addressLine1 address");
-        address.setAddressLine2("customer_address_l2");
-        address.setStreet("customer_address_street");
-        address.setPostalCode("12345");
+  private HttpHeaders createHeaders() {
+    HttpHeaders httpHeaders = new HttpHeaders();
+    httpHeaders.add("Authorization", "bearer 2b7af75e-e97e-4033-956f-7e9b9f0f00ed");
+    httpHeaders.add("Activity-id", "activity");
+    httpHeaders.add("Transaction-id", "transaction");
+    return httpHeaders;
+  }
 
-        return address;
-    }
-
-    private HttpHeaders createHeaders(){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Authorization", "bearer 2b7af75e-e97e-4033-956f-7e9b9f0f00ed");
-        httpHeaders.add("Activity-id", "activity");
-        httpHeaders.add("Transaction-id", "transaction");
-        return httpHeaders;
-    }
-
-    private HttpHeaders createInvalidHeaders(){
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Authorization", "bearer");
-        httpHeaders.add("Activity-id", "activity");
-        httpHeaders.add("Transaction-id", "transaction");
-        return httpHeaders;
-    }
+  private HttpHeaders createInvalidHeaders() {
+    HttpHeaders httpHeaders = new HttpHeaders();
+    httpHeaders.add("Authorization", "bearer");
+    httpHeaders.add("Activity-id", "activity");
+    httpHeaders.add("Transaction-id", "transaction");
+    return httpHeaders;
+  }
 }

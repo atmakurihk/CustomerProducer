@@ -1,33 +1,31 @@
-    package com.customer.converters;
+package com.customer.converters;
 
-    import com.customer.model.Customer;
-    import com.customer.utils.ApplicationConstants;
-    import org.springframework.beans.BeanUtils;
-    import org.springframework.core.convert.converter.Converter;
-    import org.springframework.stereotype.Component;
+import com.customer.model.Customer;
+import com.customer.utils.ApplicationConstants;
+import org.springframework.beans.BeanUtils;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
-    @Component
-    public class CustomerDataMaskConverter implements Converter<Customer,Customer> {
+@Component
+public class CustomerDataMaskConverter implements Converter<Customer, Customer> {
 
-        private static  final String replaceString = "*";
+  private static final String replaceString = "*";
 
-        @Override
-        public Customer convert(Customer customer) {
-            Customer maskedCustomer = new Customer();
-            BeanUtils.copyProperties(customer, maskedCustomer);
+  private static String maskString(String maskString, String regex) {
+    return maskString.replaceAll(regex, replaceString);
+  }
 
-            maskedCustomer.setCustomerNumber(
-                    maskString(maskedCustomer.getCustomerNumber(), ApplicationConstants.CUSTOMER_MASK)
-            );
-            maskedCustomer.setBirthdate(
-                    maskString(maskedCustomer.getBirthdate(), ApplicationConstants.DOB_MASK)
-            );
-            maskedCustomer.setEmail(maskString(maskedCustomer.getEmail(), ApplicationConstants.EMAIL_MASK));
+  @Override
+  public Customer convert(Customer customer) {
+    Customer maskedCustomer = new Customer();
+    BeanUtils.copyProperties(customer, maskedCustomer);
 
-            return maskedCustomer;
-        }
+    maskedCustomer.setCustomerNumber(
+        maskString(maskedCustomer.getCustomerNumber(), ApplicationConstants.CUSTOMER_MASK));
+    maskedCustomer.setBirthdate(
+        maskString(maskedCustomer.getBirthdate(), ApplicationConstants.DOB_MASK));
+    maskedCustomer.setEmail(maskString(maskedCustomer.getEmail(), ApplicationConstants.EMAIL_MASK));
 
-        private static String maskString(String maskString, String regex) {
-            return maskString.replaceAll(regex, replaceString);
-        }
-    }
+    return maskedCustomer;
+  }
+}

@@ -1,21 +1,16 @@
 package com.customer.model;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import org.springframework.validation.annotation.Validated;
 
+import java.util.Objects;
 
-/**
- * SuccessResponse
- */
+/** SuccessResponse */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-12-02T11:19:25.787Z")
-
-
-
-
-public class SuccessResponse   {
+@javax.annotation.Generated(
+    value = "io.swagger.codegen.languages.SpringCodegen",
+    date = "2020-12-02T11:19:25.787Z")
+public class SuccessResponse {
   @JsonProperty("status")
   private String status = null;
 
@@ -29,10 +24,10 @@ public class SuccessResponse   {
 
   /**
    * Get status
+   *
    * @return status
-  **/
-  //@ApiModelProperty(value = "")
-
+   */
+  // @ApiModelProperty(value = "")
 
   public String getStatus() {
     return status;
@@ -49,10 +44,10 @@ public class SuccessResponse   {
 
   /**
    * Get message
+   *
    * @return message
-  **/
-  //@ApiModelProperty(value = "")
-
+   */
+  // @ApiModelProperty(value = "")
 
   public String getMessage() {
     return message;
@@ -61,7 +56,6 @@ public class SuccessResponse   {
   public void setMessage(String message) {
     this.message = message;
   }
-
 
   @Override
   public boolean equals(Object o) {
@@ -72,8 +66,8 @@ public class SuccessResponse   {
       return false;
     }
     SuccessResponse successResponse = (SuccessResponse) o;
-    return Objects.equals(this.status, successResponse.status) &&
-        Objects.equals(this.message, successResponse.message);
+    return Objects.equals(this.status, successResponse.status)
+        && Objects.equals(this.message, successResponse.message);
   }
 
   @Override
@@ -85,7 +79,7 @@ public class SuccessResponse   {
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class SuccessResponse {\n");
-    
+
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
     sb.append("}");
@@ -93,8 +87,7 @@ public class SuccessResponse   {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
   private String toIndentedString(Object o) {
     if (o == null) {
@@ -103,4 +96,3 @@ public class SuccessResponse   {
     return o.toString().replace("\n", "\n    ");
   }
 }
-

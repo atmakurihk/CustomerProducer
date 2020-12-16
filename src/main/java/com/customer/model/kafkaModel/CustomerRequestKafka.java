@@ -2,7 +2,7 @@ package com.customer.model.kafkaModel;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-public class CustomerRequestKafka   {
+public class CustomerRequestKafka {
 
   private String customerNumber;
 
@@ -23,6 +23,8 @@ public class CustomerRequestKafka   {
   private String transactionId;
 
   private String activityId;
+  private CustomerStatusEnum customerStatus = null;
+  private AddressPublisherKafka address = null;
 
   public String getTransactionId() {
     return transactionId;
@@ -40,44 +42,6 @@ public class CustomerRequestKafka   {
     this.activityId = activityId;
   }
 
-  /**
-   * Order Status
-   */
-  public enum CustomerStatusEnum {
-    OPEN("Open"),
-    
-    CLOSE("Close"),
-    
-    SUSPENDED("Suspended"),
-    
-    RESTORED("Restored");
-
-    private String value;
-
-    CustomerStatusEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-
-    public static CustomerStatusEnum fromValue(String text) {
-      for (CustomerStatusEnum b : CustomerStatusEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
-
-  private CustomerStatusEnum customerStatus = null;
-
-  private AddressPublisherKafka  address = null;
   public String getCustomerNumber() {
     return customerNumber;
   }
@@ -157,5 +121,36 @@ public class CustomerRequestKafka   {
   public void setAddress(AddressPublisherKafka address) {
     this.address = address;
   }
-}
 
+  /** Order Status */
+  public enum CustomerStatusEnum {
+    OPEN("Open"),
+
+    CLOSE("Close"),
+
+    SUSPENDED("Suspended"),
+
+    RESTORED("Restored");
+
+    private String value;
+
+    CustomerStatusEnum(String value) {
+      this.value = value;
+    }
+
+    public static CustomerStatusEnum fromValue(String text) {
+      for (CustomerStatusEnum b : CustomerStatusEnum.values()) {
+        if (String.valueOf(b.value).equals(text)) {
+          return b;
+        }
+      }
+      return null;
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return String.valueOf(value);
+    }
+  }
+}

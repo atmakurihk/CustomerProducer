@@ -1,57 +1,65 @@
 package com.customer.model;
 
-import java.util.Objects;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 import org.springframework.validation.annotation.Validated;
+
 import javax.validation.Valid;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.util.Objects;
 
-/**
- * Customer
- */
+/** Customer */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2020-12-08T10:36:58.242Z")
-
-
-
-
-public class Customer   {
-  @Size(min = 10,max = 10 ,message = "Customer number is invalid. Customer nummer should have min length of 10")
+@javax.annotation.Generated(
+    value = "io.swagger.codegen.languages.SpringCodegen",
+    date = "2020-12-08T10:36:58.242Z")
+public class Customer {
+  @Size(
+      min = 10,
+      max = 10,
+      message = "Customer number is invalid. Customer nummer should have min length of 10")
   @JsonProperty("customerNumber")
   private String customerNumber = null;
 
-  @Size(min = 10,max = 50,message = "FirstName is invalid. FirstName should have min length 10 and max length 50.")
+  @Size(
+      min = 10,
+      max = 50,
+      message = "FirstName is invalid. FirstName should have min length 10 and max length 50.")
   @JsonProperty("firstName")
   private String firstName = null;
 
-  @Size(min = 10,max = 50,message = "LastName is invalid. LastName should have min length 10 and max length 50.")
+  @Size(
+      min = 10,
+      max = 50,
+      message = "LastName is invalid. LastName should have min length 10 and max length 50.")
   @JsonProperty("lastName")
   private String lastName = null;
 
   @NotNull
-  @Pattern(
-          regexp = "^([0-9]{2})-([0-9]{2})-([0-9]{4})$",
-          message = "Birthdate is invalid.")
+  @Pattern(regexp = "^([0-9]{2})-([0-9]{2})-([0-9]{4})$", message = "Birthdate is invalid.")
   @JsonProperty("birthdate")
   private String birthdate = null;
 
   @NotNull
   @Pattern(
-          regexp = "^[a-zA-Z]{0,50}$",
-          message = "Country is invalid. Country must contain only alphabets.")
+      regexp = "^[a-zA-Z]{0,50}$",
+      message = "Country is invalid. Country must contain only alphabets.")
   @JsonProperty("country")
   private String country = null;
 
   @NotNull
-  @Size(max = 2,message = "Country code is invalid")
+  @Size(max = 2, message = "Country code is invalid")
   @JsonProperty("countryCode")
   private String countryCode = null;
 
   @Pattern(
-          regexp = "^[\\d]{0,10}$",
-          message = "MobileNumber is invalid. MobileNumber must contain only numbers with max length 10.")
+      regexp = "^[\\d]{0,10}$",
+      message =
+          "MobileNumber is invalid. MobileNumber must contain only numbers with max length 10.")
   @JsonProperty("mobileNumber")
   private String mobileNumber = null;
 
@@ -59,41 +67,6 @@ public class Customer   {
   @Email
   @JsonProperty("email")
   private String email = null;
-
-  /**
-   * Customer Status
-   */
-  public enum CustomerStatusEnum {
-    RESTORED("restored"),
-
-    SUSPENDED("suspended"),
-
-    OPEN("open"),
-
-    CLOSED("closed");
-
-    private String value;
-
-    CustomerStatusEnum(String value) {
-      this.value = value;
-    }
-
-    @Override
-    @JsonValue
-    public String toString() {
-      return String.valueOf(value);
-    }
-
-    @JsonCreator
-    public static CustomerStatusEnum fromValue(String text) {
-      for (CustomerStatusEnum b : CustomerStatusEnum.values()) {
-        if (String.valueOf(b.value).equals(text)) {
-          return b;
-        }
-      }
-      return null;
-    }
-  }
 
   @JsonProperty("customerStatus")
   private CustomerStatusEnum customerStatus = null;
@@ -109,11 +82,10 @@ public class Customer   {
 
   /**
    * Get customerNumber
+   *
    * @return customerNumber
-   **/
+   */
   @NotNull
-
-
   public String getCustomerNumber() {
     return customerNumber;
   }
@@ -129,9 +101,9 @@ public class Customer   {
 
   /**
    * Get firstName
+   *
    * @return firstName
-   **/
-
+   */
   @NotNull
   public String getFirstName() {
     return firstName;
@@ -148,11 +120,10 @@ public class Customer   {
 
   /**
    * Get lastName
+   *
    * @return lastName
-   **/
+   */
   @NotNull
-
-
   public String getLastName() {
     return lastName;
   }
@@ -168,10 +139,10 @@ public class Customer   {
 
   /**
    * Get birthdate
+   *
    * @return birthdate
-   **/
+   */
   @NotNull
-
   @Valid
   public String getBirthdate() {
     return birthdate;
@@ -188,11 +159,10 @@ public class Customer   {
 
   /**
    * Get country
+   *
    * @return country
-   **/
+   */
   @NotNull
-
-
   public String getCountry() {
     return country;
   }
@@ -208,11 +178,10 @@ public class Customer   {
 
   /**
    * Get countryCode
+   *
    * @return countryCode
-   **/
+   */
   @NotNull
-
-
   public String getCountryCode() {
     return countryCode;
   }
@@ -228,12 +197,10 @@ public class Customer   {
 
   /**
    * Get mobileNumber
+   *
    * @return mobileNumber
-   **/
-
+   */
   @NotNull
-
-
   public String getMobileNumber() {
     return mobileNumber;
   }
@@ -249,12 +216,10 @@ public class Customer   {
 
   /**
    * Get email
+   *
    * @return email
-   **/
-
+   */
   @NotNull
-
-
   public String getEmail() {
     return email;
   }
@@ -270,12 +235,10 @@ public class Customer   {
 
   /**
    * Customer Status
+   *
    * @return customerStatus
-   **/
-
+   */
   @NotNull
-
-
   public CustomerStatusEnum getCustomerStatus() {
     return customerStatus;
   }
@@ -291,13 +254,11 @@ public class Customer   {
 
   /**
    * Get address
+   *
    * @return address
-   **/
-
+   */
   @NotNull
-
   @Valid
-
   public Address getAddress() {
     return address;
   }
@@ -305,7 +266,6 @@ public class Customer   {
   public void setAddress(Address address) {
     this.address = address;
   }
-
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -316,21 +276,31 @@ public class Customer   {
       return false;
     }
     Customer customer = (Customer) o;
-    return Objects.equals(this.customerNumber, customer.customerNumber) &&
-            Objects.equals(this.firstName, customer.firstName) &&
-            Objects.equals(this.lastName, customer.lastName) &&
-            Objects.equals(this.birthdate, customer.birthdate) &&
-            Objects.equals(this.country, customer.country) &&
-            Objects.equals(this.countryCode, customer.countryCode) &&
-            Objects.equals(this.mobileNumber, customer.mobileNumber) &&
-            Objects.equals(this.email, customer.email) &&
-            Objects.equals(this.customerStatus, customer.customerStatus) &&
-            Objects.equals(this.address, customer.address);
+    return Objects.equals(this.customerNumber, customer.customerNumber)
+        && Objects.equals(this.firstName, customer.firstName)
+        && Objects.equals(this.lastName, customer.lastName)
+        && Objects.equals(this.birthdate, customer.birthdate)
+        && Objects.equals(this.country, customer.country)
+        && Objects.equals(this.countryCode, customer.countryCode)
+        && Objects.equals(this.mobileNumber, customer.mobileNumber)
+        && Objects.equals(this.email, customer.email)
+        && Objects.equals(this.customerStatus, customer.customerStatus)
+        && Objects.equals(this.address, customer.address);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(customerNumber, firstName, lastName, birthdate, country, countryCode, mobileNumber, email, customerStatus, address);
+    return Objects.hash(
+        customerNumber,
+        firstName,
+        lastName,
+        birthdate,
+        country,
+        countryCode,
+        mobileNumber,
+        email,
+        customerStatus,
+        address);
   }
 
   @Override
@@ -353,8 +323,7 @@ public class Customer   {
   }
 
   /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * Convert the given object to string with each line indented by 4 spaces (except the first line).
    */
   private String toIndentedString(java.lang.Object o) {
     if (o == null) {
@@ -362,5 +331,37 @@ public class Customer   {
     }
     return o.toString().replace("\n", "\n    ");
   }
-}
 
+  /** Customer Status */
+  public enum CustomerStatusEnum {
+    RESTORED("restored"),
+
+    SUSPENDED("suspended"),
+
+    OPEN("open"),
+
+    CLOSED("closed");
+
+    private String value;
+
+    CustomerStatusEnum(String value) {
+      this.value = value;
+    }
+
+    @JsonCreator
+    public static CustomerStatusEnum fromValue(String text) {
+      for (CustomerStatusEnum b : CustomerStatusEnum.values()) {
+        if (String.valueOf(b.value).equals(text)) {
+          return b;
+        }
+      }
+      return null;
+    }
+
+    @Override
+    @JsonValue
+    public String toString() {
+      return String.valueOf(value);
+    }
+  }
+}

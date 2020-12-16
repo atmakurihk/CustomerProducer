@@ -16,42 +16,42 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private  PasswordEncoder passwordEncoder;
+  @Autowired private PasswordEncoder passwordEncoder;
 
-    @Override
-    protected UserDetailsService userDetailsService() {
-        UserDetails defaultUser = User.builder()
-                .username("user")
-                .password(passwordEncoder.encode("password"))
-                .roles("USER")
-                .build();
+  @Override
+  protected UserDetailsService userDetailsService() {
+    UserDetails defaultUser =
+        User.builder()
+            .username("user")
+            .password(passwordEncoder.encode("password"))
+            .roles("USER")
+            .build();
 
-        return new InMemoryUserDetailsManager(defaultUser);
-    }
+    return new InMemoryUserDetailsManager(defaultUser);
+  }
 
-    @Autowired
-    public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .userDetailsService(this.userDetailsService())
-                .passwordEncoder(passwordEncoder);
-    }
+  @Autowired
+  public void configureGlobal(final AuthenticationManagerBuilder auth) throws Exception {
+    auth.userDetailsService(this.userDetailsService()).passwordEncoder(passwordEncoder);
+  }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/oauth/token").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .httpBasic()
-                .and()
-                .csrf().disable();
-    }
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.authorizeRequests()
+        .antMatchers("/oauth/token")
+        .permitAll()
+        .anyRequest()
+        .authenticated()
+        .and()
+        .httpBasic()
+        .and()
+        .csrf()
+        .disable();
+  }
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+  @Bean
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
 }
