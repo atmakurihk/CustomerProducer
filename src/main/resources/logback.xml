@@ -31,19 +31,32 @@
         </rollingPolicy>
     </appender>
 
-
+    <appender name="http" class="com.splunk.logging.HttpEventCollectorLogbackAppender">
+        <url>https://prd-p-zbkrm.splunkcloud.com:8088</url>
+        <token>82d6c51e-ec0d-4afe-a4f6-e512c5824c57</token>
+        <disableCertificateValidation>true</disableCertificateValidation>
+        <index>history</index>
+        <source>producer-log-event</source>
+        <sourcetype>_json</sourcetype>
+        <batch_size_count>1</batch_size_count>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>%msg</pattern>
+        </layout>
+    </appender>
     <logger name="org.springframework.web" level="ERROR" additivity="false">
         <appender-ref ref="STDOUT"/>
-
+        <appender-ref ref="http"/>
     </logger>
 
     <logger name="com.customer" level="INFO" additivity="false">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="INFO-LOG"/>
+        <appender-ref ref="http"/>
     </logger>
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
+        <appender-ref ref="http"/>
     </root>
 
 </configuration>
