@@ -45,7 +45,7 @@
     </appender>
     <logger name="org.springframework.web" level="ERROR" additivity="false">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="http"/>
+        <!--<appender-ref ref="http"/>-->
     </logger>
 
     <logger name="com.customer" level="INFO" additivity="false">
@@ -56,7 +56,7 @@
 
     <root level="INFO">
         <appender-ref ref="STDOUT"/>
-        <appender-ref ref="http"/>
+        <!--<appender-ref ref="http"/>-->
     </root>
 
 </configuration>

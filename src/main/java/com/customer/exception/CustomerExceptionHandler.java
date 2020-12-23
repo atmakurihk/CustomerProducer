@@ -2,6 +2,8 @@ package com.customer.exception;
 
 import com.customer.model.FailureResponse;
 import com.customer.utils.ApplicationConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
@@ -17,6 +19,8 @@ import javax.validation.ConstraintViolationException;
 @ControllerAdvice
 public class CustomerExceptionHandler {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(CustomerExceptionHandler.class);
+
   @ExceptionHandler(GenericException.class)
   public ResponseEntity<FailureResponse> handleException(
       RuntimeException ex, WebRequest webRequest) {
@@ -24,6 +28,7 @@ public class CustomerExceptionHandler {
     failureResponse.setErrorType(ex.getClass().getName());
     failureResponse.setMessage(ex.getMessage());
     failureResponse.setStatus(ApplicationConstants.FAILURE);
+    LOGGER.error("Unknown error occurred {}", failureResponse);
     return new ResponseEntity<>(failureResponse, HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
@@ -34,6 +39,7 @@ public class CustomerExceptionHandler {
     response.setStatus(ApplicationConstants.FAILURE);
     response.setMessage(ex.getBindingResult().getFieldError().getDefaultMessage());
     response.setErrorType(ex.getClass().getSimpleName());
+    LOGGER.error("Invalid request {}", response);
 
     return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
   }
@@ -45,6 +51,7 @@ public class CustomerExceptionHandler {
     failureResponse.setErrorType(ex.getClass().getName());
     failureResponse.setMessage(ex.getMessage());
     failureResponse.setStatus(ApplicationConstants.FAILURE);
+    LOGGER.error("Invalid request {}", failureResponse);
     return new ResponseEntity<>(failureResponse, HttpStatus.BAD_REQUEST);
   }
 
@@ -65,6 +72,7 @@ public class CustomerExceptionHandler {
     response.setErrorType(ex.getClass().getSimpleName());
     response.setStatus(ApplicationConstants.FAILURE);
     response.setMessage("Request headers are missing " + ex.getMessage());
+    LOGGER.error("Invalid request {}", response);
     return new ResponseEntity(response, HttpStatus.BAD_REQUEST);
   }
 }
